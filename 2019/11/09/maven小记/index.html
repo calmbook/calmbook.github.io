@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          maven小记 - Thoughtliuw | 刘威的博客
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2019/11/09/maven小记/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('null')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>maven小记</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Thoughtliuw on
+                            2019-11-09
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Read &amp; Write</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="java的包管理和它的问题">Java的包管理和它的问题</h3>
+<p>在Java中<code>package + 类名</code>就代表了一个唯一的类，如果只有我们自己的程序，这当然没有问题。<br>
+但是当你引用外部类的时候，则可能出现不同的jar包中会有相同的package，但是这并不会产生冲突，因为JVM会运行它找到的第一个jar包<br>
+假设我们的JVM找到的classpath是这样的(冒号表示分隔符）：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">C:</span><span class="regexp">/test1/</span>old.<span class="string">jar:</span><span class="string">C:</span><span class="regexp">/test2/</span><span class="keyword">new</span>.jar</span><br></pre></td></tr></table></figure>
+<p>这两个jar包中都有一个 <code>com.github.util</code>包，包中还都有一个<code>StringUtil</code>类<br>
+那么JVM在找到<strong>old.jar</strong>中的<code>StringUtil</code>类之后就不会再往下找了，但我们想要的却是<strong>new.jar</strong>中的<code>StringUtil</code>类</p>
+<p>问题由此产生，但似乎又没办法解决</p>
+<p>maven的作用之一就是来解决这样的问题</p>
+<h3 id="maven坐标">Maven坐标</h3>
+<p><strong>让package成为唯一的</strong></p>
+<p>为了解决上面这个问题，Maven使用了一种<strong>约定</strong>来保证包的唯一性，那就是我们常见的三剑客。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-collections4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>groupId 加上 artifactId其实就已经确定了一个唯一的package，这个package就是<code>org.apache.commons.collections4</code>（前面一部分groupId和org.apache.commons是严格对应的，但是后面一部分并不一定和artifactId是严格对应）<br>
+当然，这只是一种约定，你当然可以groupId写成这样，package写成那样，但是你这样乱搞，就没人跟你玩儿了，这就是Maven <strong>约定重于配置</strong> 的理念</p>
+<p><code>groupId</code>通常会采用公司的域名，域名大家都知道是唯一的，那么groupId就是唯一的，那么org.apache.commons就是唯一的<br>
+然后你只需要保证你的不同的jar包中没有重复的package就可以了，例如说另外一个这个公司的jar包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-lang3<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.8.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>它的package就是<code>org.apache.commons.lang3</code>,我只需要保证collection4和lang3不同就可以保证我这两个package都是世界上独一无二的package了<br>
+当然，我们并没有忘记<code>version</code>，我们放到包冲突中再讲。</p>
+<h3 id="包冲突">包冲突</h3>
+<h4 id="包冲突仍然存在">包冲突仍然存在</h4>
+<p>尽管我们可以保证使用上面的方法之后，不同人不同团队开发的jar包中package肯定是不一样的，但是你自己的jar包总不可能开发出来就十全十美吧，你总得升级换代。<br>
+但是<strong>Maven是不允许你对已经发布的jar包进行修改的，你只能发布一个新的jar包来应用你的更改</strong>。<br>
+这个规定的理由应该是显而易见的，你总不想你的项目今天测试还好好的，第二天啥也没改，发现项目中的类都找不到了，或是方法都不能用了吧。</p>
+<p>所以说Maven坐标的最后一部分<code>version</code>就是用来区分同一个jar包的不同版本的，但是这个version并不会体现到最后的package中，它是给Maven用来区分不同的包版本的。<br>
+所以说还是可能出现我们最初遇到的情况</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/org/</span>apache<span class="regexp">/commons/</span>commons-collections4<span class="number">-4.0</span>.<span class="string">jar:</span></span><br><span class="line"><span class="regexp">/org/</span>apache<span class="regexp">/commons/</span>commons-collections4<span class="number">-4.1</span>.jar</span><br></pre></td></tr></table></figure>
+<p>那么此时我们应该用哪个包呢？</p>
+<h4 id="传递性依赖">传递性依赖</h4>
+<p>在解决上面那个问题之前，我们先停下来看一下什么情况下会出现上面那种问题。<br>
+诶，不是讲了吗，引用相同的包的时候啊，但是一般来说我们是不会吃饱了没事儿干引入两个相同的dependency吧，但是包冲突依然时常发生，为什么？</p>
+<p>答案就是Maven的传递性依赖，我们在引入一个包的时候，它可能需要其他的包，Maven会自动的帮我们导入它需要的包。<br>
+<a href="https://mvnrepository.com/artifact/com.google.guava/guava/23.0" target="_blank" rel="noopener">commons-collections4的maven依赖</a><br>
+在页面底部会有下面这样一个东西，列举了<code>commons-collections4</code>本身还需要的4个jar包，而Maven会帮我们全部引入</p>
+<blockquote>
+<p>Compile Dependencies (4)</p>
+</blockquote>
+<p>说到这里问题已经呼之欲出了，尽管我们不会自己引入相同jar包的不同版本，但是在传递性依赖中则很有可能出现。<br>
+比如我的collection4和lang3都依赖了test.jar,但一个依赖的是test-1.0.jar,一个依赖的是test-2.0.jar,那么包冲突就产生了。</p>
+<h3 id="如何解决包冲突">如何解决包冲突</h3>
+<h4 id="原则">原则</h4>
+<p>最终的依赖包中不允许相同的包出现（classpath中不会出现两个相同的jar包）<br>
+所以最终相同的包只会剩下一个，其他的都会被Maven丢掉。</p>
+<h4 id="具体策略maven-的策略">具体策略（Maven 的策略）</h4>
+<h5 id="选择最近的一个">选择最近的一个</h5>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        <span class="comment">--- A —— B —— C2（被抛弃）</span></span><br><span class="line">我的项目</span><br><span class="line">        <span class="comment">--- D —— C1（留下）</span></span><br></pre></td></tr></table></figure>
+<p>那么最终C2.jar会被抛弃，留下C1.jar (但可能被抛弃的就是我们想要的，比如我们就是想要最新的C2版本)</p>
+<h5 id="如果一样近怎么办">如果一样近怎么办？</h5>
+<p>选择在pom中先声明的</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        <span class="comment">--- A —— C2(留下)</span></span><br><span class="line">我的项目</span><br><span class="line">        <span class="comment">--- D —— C1(抛弃)</span></span><br></pre></td></tr></table></figure>
+<h4 id="如何手动解决">如何手动解决</h4>
+<p>上面提到Maven的策略不一定就是我们想要的结果，所以我们有时还是需要自己动手，丰衣足食。</p>
+<p><strong>方法一： 把想要的包放到最前面</strong></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">        <span class="comment">--- A —— B —— C2</span></span><br><span class="line"></span><br><span class="line">我的项目 <span class="comment">--- D —— C1</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">--- C2</span></span><br></pre></td></tr></table></figure>
+<p><strong>方法二 ：排除掉不想要的包</strong><br>
+在pom 文件中修改依赖,加入一个exclusions：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.xxx<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lib-D<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.thoughtliuw<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lib-C<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ddependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        <span class="comment">--- A —— B —— C2</span></span><br><span class="line">我的项目 </span><br><span class="line">        <span class="comment">--- D</span></span><br></pre></td></tr></table></figure>
+<p>将D包中所依赖的C包干掉（注意：这里是不用加版本号的）</p>
+<p><strong>图形化操作</strong>：这个排除的过程可以通过idea的图形化操作来完成：<br>
+通过一个插件Maven helper，具体用法请自行google</p>
+<h3 id="如何发现冲突">如何发现冲突</h3>
+<p>讲完解决冲突才讲怎么发现冲突有点怪，但是我认为这样的理解可能更深入</p>
+<p>当你在项目中突然报错某个类或者某个方法找不到，而这个类又不是你自己写的，这个时候你很可能就遇到了包冲突的问题</p>
+<ul>
+<li>
+<h4 id="命令行">命令行</h4>
+</li>
+</ul>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mvn </span>dependency:tree</span><br></pre></td></tr></table></figure>
+<p>得到结果后可以贴出来，也可以用另外一个命令</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">mvn</span> <span class="selector-tag">dependency</span><span class="selector-pseudo">:tree</span> &gt; <span class="selector-tag">tmp</span><span class="selector-class">.txt</span></span><br></pre></td></tr></table></figure>
+<p>后面这一部分的意思是将结果重定向（或者可以暂时理解为导入）到tmp.txt中方便查看<br>
+当然这只是这个命令的一部分，我在网上找到一篇文章讲的比较清楚：<br>
+<a href="https://blog.csdn.net/u010003835/article/details/81633093" target="_blank" rel="noopener">mvn dependency:tree 查看jar包依赖关系</a></p>
+<ul>
+<li>
+<h4 id="ide">IDE</h4>
+</li>
+</ul>
+<p>我们更多的可能会在IDEA中进行Maven依赖包的查看，<br>
+在IDEA自带的maven模块中我们可以直接搜索包名进行查找</p>
+<ul>
+<li>
+<h4 id="插件">插件</h4>
+</li>
+</ul>
+<p>在IDEA中安装一个叫做Maven Helper的插件，它会自动帮你分析哪些依赖冲突了，右键还可以点击exclude，它就会自动的帮你在pom中添加exclusions的标签。</p>
+<ul>
+<li>
+<h4 id="命令行这么麻烦能不能不学">命令行这么麻烦能不能不学</h4>
+</li>
+</ul>
+<p>既然有了这么好的IDE工具，插件，那还要命令行干嘛，但是有时候线上依赖可能和本地依赖不一样，我们又没办法拿到源代码，只能使用命令行，所以命令行的方式还是要学会的，至少要了解，要用的时候知道去查什么</p>
+<h3 id="作用域">作用域</h3>
+<p>maven的作用域<code>scope</code>的作用：<br>
+让不同的jar包在不同的环境下起作用，而在另外一些环境不起作用</p>
+<ul>
+<li>
+<h4 id="test">test</h4>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>只在test文件夹中有用，在main中没有用，不信你试试设置test作用域之后在main中试试<code>@Test</code>能不能用</p>
+<ul>
+<li>
+<h4 id="provided">provided</h4>
+</li>
+</ul>
+<p>只在编译的时候有效，运行的时候不生效<br>
+这有什么卵用?<br>
+比如我们在部署web应用的时候，Tomcat中一些jar包已经有了，例如servlet.jar,那你就应该在运行的时候自己的jar包去掉，避免冲突</p>
+<ul>
+<li>
+<h4 id="compile">compile</h4>
+</li>
+</ul>
+<p>编译和运行的时候都生效</p>
+<h3 id="其他的一些小知识">其他的一些小知识</h3>
+<ul>
+<li>
+<p>Maven 中央仓库<br>
+<a href="http://repo1.maven.org/maven2/" target="_blank" rel="noopener">http://repo1.maven.org/maven2/</a></p>
+</li>
+<li>
+<p>Maven 快照版本 （SNAPSHOT）<br>
+Maven不允许对一个已经发布的版本进行更新，所以一般在开发者内部会通过SNAPSHOT来对一个版本进行频繁的更新</p>
+</li>
+</ul>
+<h3 id="冰山之下">冰山之下</h3>
+<p>这篇文章中对于Maven具体怎么用的没有讲太多，更多的是一些概念上的理解，并且Maven远不止是一个包管理工具，更是一个自动化构建工具（留待另外一篇文章说明）。<br>
+对于Maven系统的了解可以参考《Maven实战》，书比较老，看看核心概念就好</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/08/25/start/" data-toggle="tooltip" data-placement="top" title="原点">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#java的包管理和它的问题"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Java的包管理和它的问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#maven坐标"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Maven坐标</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#包冲突"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">包冲突</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#包冲突仍然存在"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">包冲突仍然存在</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#传递性依赖"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">传递性依赖</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#如何解决包冲突"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">如何解决包冲突</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#原则"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">原则</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#具体策略maven-的策略"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">具体策略（Maven 的策略）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#选择最近的一个"><span class="toc-nav-number">4.2.1.</span> <span class="toc-nav-text">选择最近的一个</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#如果一样近怎么办"><span class="toc-nav-number">4.2.2.</span> <span class="toc-nav-text">如果一样近怎么办？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#如何手动解决"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">如何手动解决</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#如何发现冲突"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">如何发现冲突</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#命令行"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">命令行</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ide"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">IDE</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#插件"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">插件</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#命令行这么麻烦能不能不学"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">命令行这么麻烦能不能不学</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#作用域"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">作用域</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#test"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">test</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#provided"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">provided</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#compile"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">compile</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#其他的一些小知识"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">其他的一些小知识</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#冰山之下"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">冰山之下</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "http://yoursite-url/2019/11/09/maven小记/";
+    var disqus_url = "http://yoursite-url/2019/11/09/maven小记/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/YenYuHsuan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/thoughtliuw">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://www.linkedin.com/in/yu-hsuan-yen">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Thoughtliuw 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" /> -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

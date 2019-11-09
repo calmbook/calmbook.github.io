@@ -65,9 +65,6 @@
 .toc-nav-link:hover {
   color: color-theme;
 }
-.toc-nav-child {
-  margin-left: 1em;
-}
 #sidebar {
   display: inline;
   float: left;
