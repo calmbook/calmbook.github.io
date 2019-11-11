@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          Thoughtliuw | 刘威的博客
+          hexo小记 - Thoughtliuw | 刘威的博客
         
     </title>
 
-    <link rel="canonical" href="http://yoursite-url/404.html">
+    <link rel="canonical" href="http://yoursite-url/2019/11/11/hexo小记/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -69,8 +69,8 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/404-bg.jpg')
-            /*page*/
+            background-image: url('null')
+            /*post*/
         
     }
     
@@ -87,10 +87,16 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 
-                    <div class="site-heading">
-                        <h1>Read &amp; Write</h1>
-                        <!--<hr class="small">-->
-                        <span class="subheading">你来到了没有知识的荒原 :(</span>
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>hexo小记</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Thoughtliuw on
+                            2019-11-11
+                        </span>
                     </div>
                 
 
@@ -193,25 +199,198 @@
 
 
     <!-- Main Content -->
-    
-<!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/404-bg.jpg')">
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>404</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">你来到了没有知识的荒原 :(</span>
-                </div>
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>持续更新中…</p>
+</blockquote>
+<h3 id="hexo-搭建博客">hexo 搭建博客</h3>
+<p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">hexo文档</a><br>
+使用hexo搭建博客非常简单，不过一开始不需要看那些花里胡哨的配置，消磨时间，用最快速的时间搭建起一个可以看的到的博客才是最重要的(确保你已经安装了git 以及 hexo，如果没有的话跟着hexo文档也能很快安装)</p>
+<ol>
+<li>
+<p>建立一个github仓库，项目的名字必须符合 <code>your github account.github.io</code> 。<br>
+例如我的就是<code>thoughtliuw.github.io</code><br>
+注意在新建项目的时候什么都不要勾选，包括那个要你创建README文件的选项。</p>
+</li>
+<li>
+<p>在hexo主题商店选择一个主题（其实在主题商店应该只能下载到主题文件，但是有很多主题的源代码把整个项目都传进来了，这让我们建立网页更加方便，当然你也可以跟着官网一步步建立一个项目然后再换主题，但这里我们仍然用最快速的方法就是直接把人家的项目搬过来。<br>
+我找到的主题是<a href="https://github.com/YenYuHsuan/hexo-theme-beantech" target="_blank" rel="noopener">beantech</a><br>
+为了方便看，我还是把代码贴过来</p>
+</li>
+</ol>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">git</span> clone https://github.com/YenYuHsuan/hexo-theme-<span class="keyword">beantech.git </span>./hexo-<span class="keyword">beantech</span></span><br><span class="line"><span class="keyword">cd </span>hexo-<span class="keyword">beantech</span></span><br><span class="line"><span class="keyword">npm </span>install</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>修改配置文件<code>_config.yml</code></li>
+</ol>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">deploy:</span></span><br><span class="line"><span class="symbol">  type:</span> git</span><br><span class="line"><span class="symbol">  repo:</span> https:<span class="comment">//github.com/&lt;yourAccount&gt;/&lt;repo&gt;   </span></span><br><span class="line"><span class="symbol">  branch:</span> <span class="params">&lt;branch&gt;</span></span><br></pre></td></tr></table></figure>
+<p>例如我的就是</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git</span><br><span class="line">  <span class="attribute">repository</span>: <span class="attribute">https</span>:<span class="comment">//github.com/thoughtliuw/thoughtliuw.github.io.git</span></span><br><span class="line">  <span class="attribute">branch</span>: master</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>本地调试</li>
+</ol>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo generate </span><br><span class="line">hexo<span class="built_in"> server </span># 本地调试启动一个服务器</span><br></pre></td></tr></table></figure>
+<p>然后你就会看到</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hexo is running <span class="keyword">at</span> <span class="keyword">http</span>://localhost:<span class="number">4000</span>/. Press Ctrl+C <span class="built_in">to</span> <span class="built_in">stop</span>.</span><br></pre></td></tr></table></figure>
+<p>在浏览器打开网址上面这个网址就可以打开了，要退出调试模式按 <code>Ctrl+C</code>即可</p>
+<ol start="5">
+<li>上传代码到github</li>
+</ol>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">hexo deploy</span></span><br></pre></td></tr></table></figure>
+<p>大功告成！！ 不出意外的话你在浏览器用<code>your github account.github.io</code>（例如我的就是 <a href="http://thoughtliuw.github.io" target="_blank" rel="noopener">thoughtliuw.github.io</a> 就能访问到你的网站了</p>
+<h3 id="else">else</h3>
+<p>至于怎么new 一篇博客，怎么加标签等等东西都不是在最开始要考虑的，这些东西等你真正开始写文章了，再去看一下官方的文档或者参考其他人踩过的坑都能慢慢的解决，但最重要的就是先建立信心，完成一个整体的步骤，而不是钻进细节，把三分钟的热情顿时消耗光。<br>
+当然还有很多的东西没有记录，比如怎么调整样式，怎么绑定域名等等…<br>
+有时间再更新</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/11/09/maven小记/" data-toggle="tooltip" data-placement="top" title="maven小记">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#hexo-搭建博客"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hexo 搭建博客</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#else"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">else</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
             </div>
         </div>
     </div>
-</header>
+</article>
 
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<!-- <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "http://yoursite-url/2019/11/11/hexo小记/";
+    var disqus_url = "http://yoursite-url/2019/11/11/hexo小记/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script> -->
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
 <script>
-    document.body.classList.add('page-fullscreen');
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
 </script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->
