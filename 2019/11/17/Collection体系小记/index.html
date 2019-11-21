@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Collection体系小记 - Thoughtliuw | 刘威的博客
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2019/11/17/Collection体系小记/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('collection-head.jpeg')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>Collection体系小记</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Thoughtliuw on
+                            2019-11-17
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Read &amp; Write</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>Java的Collection和Map（是的，Map并不属于Collection）是位于<code>java.util</code>包中的，顾名思义它是一个好用的工具类，它为我们封装了各种各样的数据结构，并提供了好用的API。Java集合的内容其实比较多，要把每一种集合的原理都搞清楚在一篇文章中是做不到的，所以这里只是一个概览以及一些重要的知识点记录。</p>
+<h3 id="collection-体系结构图">Collection 体系结构图</h3>
+<p><img src="collection.png" alt="Collection 体系继承图"><br>
+<img src="java-map-hierarchy.png" alt="Map 结构图"></p>
+<h3 id="collection-增删改查api">Collection 增删改查API</h3>
+<p>无论怎么封装，我们最终的目的还是操作数据，所以一些常用的API是需要记住的，这样你就会少做一些不必要的操作。例如你在把一个集合添加到另一个集合的时候就不会再傻傻的用for循环而是使用<code>addAll</code>方法了</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- C(Create) / U(Update): add/addAll/retainAll</span><br><span class="line">- D(Delete): remove/removeAll/clear</span><br><span class="line">- R(Read):size/isEmpty/contains</span><br></pre></td></tr></table></figure>
+<p>可以看到这里并没有我们经常用的ArrayList的<code>get(int index)</code>方法，因为ArrayList内部是个顺序存储的数组，是一个线性的结构，一个后面接着一个，所以可以按索引存储。<br>
+其实List接口都实现了get方法，所以个人理解，List接口设计出来就是为了描述这种线性的一个后面跟着一个的存储结构的<br>
+而Set接口则没有实现这个方法，无论是利用Hash还是利用Tree，都无法根据索引随机访问</p>
+<ul>
+<li>retainAll<br>
+其他的方法看名字都知道啥意思，但是<code>retainAll</code>要稍微解释下：<br>
+<code>retainAll</code>: 求交集。类似下面这样的概念：</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>].retainAll([<span class="number">1</span>,<span class="number">2</span>]) =&gt; [<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>] (非java代码)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>remove<br>
+再说一下remove方法，remove方法的参数是<code>Object</code>类型<br>
+那我怎么知道自己删的是哪个呢？其实包括上面的<code>retainAll</code>方法也是这样，数字还比较好比较，如果是一个对象我改怎么比较呢？<br>
+看一下ArrayList的remove方法：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; size; index++)</span><br><span class="line">                <span class="keyword">if</span> (elementData[index] == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    fastRemove(index);</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; size; index++)</span><br><span class="line">                <span class="keyword">if</span> (o.equals(elementData[index])) &#123;</span><br><span class="line">                    fastRemove(index);</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>其他的其实都不重要，我们需要看到的就是当obj不为null时，它是怎么比较的。对，就是那个<code>equals</code>方法，它被用来比较两个对象是否相等。</p>
+<h3 id="equals">equals</h3>
+<p>从上面的例子我们可以看出，equals方法是应用的非常广泛的，无论你是想删除、更新还是想看看你的集合里面有没有这个元素(contains)你都需要进行<strong>对象的比较</strong>，来看看你传入的对象和当前集合中的对象是否相等。</p>
+<p>Object自己的equals方法是比较两个对象的地址 而由于多态的存在，当我们重写了equals方法后，在比较对象的时候就会使用我们自己的方法来进行对象的比较了。</p>
+<p>其实equals有一个好基友叫HashCode，但放到后面再说</p>
+<p>HashSet 和 HashMap都是比较常见的类，包括后面要说的HashCode都跟他们密切相关，但在此之前我们得先了解一点Hash算法的知识。</p>
+<h3 id="一个小小的面试题">一个小小的面试题</h3>
+<p>在正式讲Hash算法之前，先抛一个常见的面试题出来，那就是为什么在重写equals的时候一定要重写HashCode，大家可以带着问题再去后面的内容</p>
+<h3 id="hash">Hash</h3>
+<h4 id="hash算法简述">Hash算法简述</h4>
+<p>Hash算法比较复杂，简单的理解就是我根据一个元素映射到一个值，映射出来的这个值是独一无二的，那么我们就可以通过这个值来找到这个元素。<br>
+例如说我们有一个数组，然后我想往里面存储Student对象（对象里面有id和name属性，id是学号），我们当然可以用数组的方式，挨个的往里面存。但是你可以想一下，这样做存的时候是很方便，可是找的时候呢？我们就必须遍历整个数组，效率很低。<br>
+现在我们采用Hash算法，怎么做呢？我们假设现在有这样一个算法，根据这个神奇的算法我们可以将Student对象的姓名（name的值）映射成一个数组的索引，并且暂时假设映射出来的索引肯定不会跟其他人重复。<br>
+那么当我们需要从这个数组里面找某个Student对象的时候只需要根据Hash算法计算这个Student对象的name所对应的索引，然后通过数组，一下子就可以访问到了。<br>
+我们经常看到的<code>HashCode</code>其实就是我们这里所说的这个索引</p>
+<h4 id="hash冲突">Hash冲突</h4>
+<p>上面我们其实也可以看到，上面那个案例最大的隐患就是我们假设通过那个神奇的算法所得到的数组索引是绝对不会重复的，但其实并没有这样神奇的算法，好的算法会尽量降低这个概率，让索引的分布尽可能的&quot;平均&quot;,但是却没办法保证绝对不重复，所以当两个元素的HashCode（即计算出来的索引值）相同的时候就产生了Hash冲突。</p>
+<h4 id="解决hash冲突">解决Hash冲突</h4>
+<p>产生Hash冲突意味着一个数组上的某个位置有两个元素，此时我们怎么办呢？<br>
+这里我觉得其实可以再用一个数组也没啥问题，但是Java中采用的是链表，关于这一点我还没完全搞明白，搞明白再来更新。<br>
+总之就是我们在这里可以再次采用一种数据结构把这两个元素给组织起来。<br>
+为了模拟出Hash冲突，我们假设这个神奇的算法在计算的时候会忽略掉Student对象的大小写<br>
+现在我们想要查询一个Student对象会怎么样呢？我们仍然会通过一个神奇的算法将这个Student对象的name变成一个HashCode（数组的索引），然后通过它去找到数组上的这个位置，然后我们发现这个位置上有两个元素，所以没有办法直接把值返回，接着我们会尝试用学生的id进行比较，然后从两个元素中找到自己想要的那个，这里所规定的用id进行比较只是我们的规定，其实就是使用equals方法进行比较。但你可以看出来，这样的效率仍然很高，我们也就比原来多查了一两次而已</p>
+<h4 id="hash-小结">Hash 小结</h4>
+<p>总的来说利用Hash进行查找的过程就是先利用Hash算法计算对象得到一个索引值HashCode，利用这个HashCode去数组对应的位置上找，如果只有一个元素，那找到了，如果有多个元素使用equals方法继续比较，相等就找到了，都不等就没找到，至于找到之后干什么责由你决定，可能你想删除，或者是更新，或者仅仅是想看看是不是有这个对象(contains)<br>
+你也可以这样想，equals中的内容是我们想要得到的目的，比如我们认为两个人名字一样他们就应该是同一个人，而HashCode则是提高我们比较效率的东西，也就是说它是一种手段</p>
+<h4 id="hashcode的特性">HashCode的特性</h4>
+<ol>
+<li>同一个对象通过Hash算法（java中即使hashCode方法）所得到的值是一样的</li>
+<li>两个对象通过equals返回true，则HashCode也相等</li>
+<li>两个对象通过equals返回false，HashCode也可能相等<br>
+结合这几个特性再回头来说那个面试题，重写equals方法就要重写HashCode方法也就是为了符合这几个原则</li>
+</ol>
+<h3 id="set">Set</h3>
+<p>Set是集合，跟我们初中学的集合是类似的概念，就是一个不能有重复元素的集合。<br>
+但是集合的另外一个特点无序性，并不是每一个子类都有这个特点，有时我们也想要有序的集合</p>
+<h4 id="hashset">HashSet</h4>
+<p>顾名思义，就是利用Hash算法实现的Set，因为每次新增的时候都要判断Set中的元素是不是已经存在过，如果用List实现效率比较低，所以我们可以使用Hash算法，只要确保我在新增或者更新的时候如果出现重复的元素就将他更新掉，那么整个Set就是不重复的了</p>
+<h4 id="其他的set">其他的Set</h4>
+<ul>
+<li>LinkedHashSet<br>
+HashSet和真正的集合一样是无序的，如果我们想要插入有序的话，那么就可以使用LinkedHashSet，它的内部维护了一个链表记录了我们插入的顺序。</li>
+<li>TreeSet<br>
+TreeSet 同样是一个有序的Set，只不过这里的顺序并不是我们插入的顺序，而是集合中数据的大小，那么集合中哪个对象大哪个对象小呢？说到这里是不是特别熟悉，是的，这和equals的约定特别的相似，你的对象只需要实现Comparable接口即实现了compareTo方法，那么TreeSet就会按照这个比较大小的方式在你插入数据的时候就完成集合的排序（用树的方式）</li>
+</ul>
+<h3 id="map">Map</h3>
+<p>Map体系独立于Collection之外，Collection都是一个坑位一个人，而Map则是一对，key和Value<br>
+Map的CRUD接口</p>
+<ul>
+<li>C/U: put()/putAll()</li>
+<li>R: get()/size() 、containsKey()/containsValue()、keySet()/values()/entrySet()</li>
+<li>D: remove()/clear()</li>
+</ul>
+<h4 id="hashmap">Hashmap</h4>
+<p>HashMap的key就是一个Set，所以HashMap的key是不能重复的，但是Value是可以重复的，它所使用的HashCode和equals的约定和HashSet是相同的</p>
+<h4 id="其他map">其他Map</h4>
+<p>LinkedHashMap,TreeMap,也和HashSet 是类似的</p>
+<h3 id="使用成熟的类库">使用成熟的类库</h3>
+<p>了解原理是为了更好的理解使用的场景，不要轻易的自己发明轮子，在了解原理之后去使用经过无数次生产测试的成熟类库是更好的选择，例如<code>Collections</code>,<code>Guava</code></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/11/14/Java-I-O-小记/" data-toggle="tooltip" data-placement="top" title="Java I/O 小记">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#collection-体系结构图"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Collection 体系结构图</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#collection-增删改查api"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Collection 增删改查API</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#equals"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">equals</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一个小小的面试题"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">一个小小的面试题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#hash"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Hash</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hash算法简述"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">Hash算法简述</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hash冲突"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">Hash冲突</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#解决hash冲突"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">解决Hash冲突</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hash-小结"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">Hash 小结</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hashcode的特性"><span class="toc-nav-number">5.5.</span> <span class="toc-nav-text">HashCode的特性</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#set"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Set</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hashset"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">HashSet</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#其他的set"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">其他的Set</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#map"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Map</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hashmap"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">Hashmap</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#其他map"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">其他Map</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用成熟的类库"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">使用成熟的类库</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<!-- <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "http://yoursite-url/2019/11/17/Collection体系小记/";
+    var disqus_url = "http://yoursite-url/2019/11/17/Collection体系小记/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script> -->
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/thoughtliuw">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Thoughtliuw 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" /> -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
