@@ -69,7 +69,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('wait_queue.jpg')
+            background-image: url('thread.png')
             /*post*/
         
     }
@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -213,10 +213,13 @@
                 post-container">
 
                 <p><em>Java多线程的内容很多，本篇文章只是一个概览，许多内容需要另外成文才能梳理清楚</em></p>
-<h2 id="为什么需要多线程">为什么需要多线程？</h2>
+<h2 id="多线程概述">多线程概述</h2>
 <p>参考文章：<br>
 <a href="https://mp.weixin.qq.com/s?__biz=MzAxOTc0NzExNg==&amp;mid=2665514609&amp;idx=1&amp;sn=ba61f8b37acc79b1a17871fc7ec5c353&amp;chksm=80d67e32b7a1f724242c38502b9aad8ad398b6b5c56c4e980c802a880ec1c70e5dfdcaafd9ae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">小白科普:线程和线程池</a><br>
-需要多线程无非就是一个原因，那就是单线程搞不定了，我们可以先联想一个生活中的例子<br>
+<a href="https://www.cnblogs.com/lixinjie/p/what-will-be-if-we-treat-a-thread-as-a-person.html" target="_blank" rel="noopener">如果把线程当作一个人来对待，所有问题都瞬间明白了</a><br>
+建议先对线程有一个基本的了解，知道操作系统中线程的概念，在学习Java多线程时会比较有帮助</p>
+<h3 id="为什么需要多线程">为什么需要多线程？</h3>
+<p>需要多线程无非就是一个原因，那就是单线程搞不定了，我们可以先联想一个生活中的例子<br>
 假如我们走进了一家餐馆，餐馆不大，所以老板为了节省成本，只招了一个厨师，平时大家都点个青椒炒青菜，西红柿炒番茄似乎还没有什么问题，可是今天好死不死，你前面那位兄弟点了一道佛跳墙。。。<br>
 Java中的代码是同步执行的，也就是说，你前一行代码不执行完，后面一行代码是不能执行的。<br>
 这样的好处是代码非常容易理解，同一时刻，你在执行每一步的时候都知道前面一步返回了什么，但问题是效率很低，非常低。<br>
@@ -253,7 +256,7 @@ Java中的代码是同步执行的，也就是说，你前一行代码不执行�
 <h3 id="使用多线程">使用多线程</h3>
 <p>网上已经有很多例子了，这里简单演示一下，就用去餐馆吃饭的例子吧。<br>
 我们使用Thread.sleep(2000)来模拟一个耗时的等菜（I/O）操作。</p>
-<h3 id="demo">demo</h3>
+<p><strong>demo</strong></p>
 <ul>
 <li>单线程版本：</li>
 </ul>
@@ -263,13 +266,13 @@ Java中的代码是同步执行的，也就是说，你前一行代码不执行�
 这里要提一下就是我们不能像单线程中那样直接统计耗时，因为main线程并不会等你其他线程都结束了才打印，所以这里用了一个比较笨的办法，新开了一个线程，无限循环，判断其他线程是否结束，如果都结束了，打印耗时，退出循环。</li>
 </ul>
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 餐馆吃饭多线程版</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadInit</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws InterruptedException </span>&#123;</span><br><span class="line">        <span class="comment">// 使用多线程</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">            Thread thread1 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户1"</span>);</span><br><span class="line">            Thread thread2 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户2"</span>);</span><br><span class="line">            Thread thread3 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户3"</span>);</span><br><span class="line">            Thread thread4 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户4"</span>);</span><br><span class="line">            thread1.start();</span><br><span class="line">            thread2.start();</span><br><span class="line">            thread3.start();</span><br><span class="line">            thread4.start();</span><br><span class="line"></span><br><span class="line">            Thread timingThread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="built_in">run</span>() &#123;</span><br><span class="line">                    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">                        <span class="keyword">if</span>( !(thread1.isAlive() || thread2.isAlive() </span><br><span class="line">                        || thread3.isAlive() || thread4.isAlive) ) &#123;</span><br><span class="line">                            <span class="keyword">long</span> <span class="built_in">end</span> = System.currentTimeMillis();</span><br><span class="line">                            System.out.<span class="built_in">println</span>(<span class="string">"多线程总计用时: "</span> + (<span class="built_in">end</span> - start) + <span class="string">"ms"</span>);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            timingThread.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> 去餐馆吃饭多线程改进版 <span class="title">implements</span> <span class="title">Runnable</span>&#123;</span></span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(Thread.currentThread().getName()+ <span class="string">"点菜"</span>);</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"等菜"</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.<span class="built_in">println</span>(Thread.currentThread().getName()+ <span class="string">"上菜"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="线程里都存了些什么">线程里都存了些什么？</h2>
+<h3 id="线程里都存了些什么">线程里都存了些什么？</h3>
 <p>子线程和主线程（main）没有什么区别，他们都存储了方法栈，也就说方法的局部变量都是隔离的，但是他们是共享JVM堆中的对象的。</p>
-<h2 id="子线程是什么时候结束的">子线程是什么时候结束的？</h2>
+<h3 id="子线程是什么时候结束的">子线程是什么时候结束的？</h3>
 <p>和主线程一样，方法执行完了就结束，对于多线程而言就是执行完了Run方法就结束</p>
 <h2 id="多线程带来的问题">多线程带来的问题</h2>
 <p>多线程确实大大提高了我们的效率，但并不是什么问题都没有，否则Java也不会专门弄一个JUC(<code>java.util.concurrent</code>)包来解决并发问题了<br>
-多线程主要的问题就是对于共享资源的访问上。</p>
+多线程主要的问题就是对于共享资源的操作上</p>
 <h3 id="一个小例子">一个小例子</h3>
 <p>比如说现在有一个原始的车站，准备卖票，但他们并没有车票系统，只有一块供旅客看的大屏幕，屏幕上显示了不同车次的剩余车票数，车票数的更新需要人工操作。<br>
 假设现在一共有100张1111车次的票。分别由两个售票员（A和B）进行售卖，一人50张，他们面前排着长长的队。<br>
@@ -287,7 +290,7 @@ Java中的代码是同步执行的，也就是说，你前一行代码不执行�
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread_Sync</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        Map&lt;Integer,Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> AddElement(<span class="built_in">map</span>)).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AddElement</span> <span class="title">implements</span> <span class="title">Runnable</span>&#123;</span></span><br><span class="line">        <span class="keyword">private</span> Map&lt;Integer,Integer&gt; <span class="built_in">map</span>;</span><br><span class="line">        AddElement(Map&lt;Integer,Integer&gt; <span class="built_in">map</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.<span class="built_in">map</span> = <span class="built_in">map</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">            <span class="keyword">if</span>(!<span class="built_in">map</span>.containsKey(i))&#123;</span><br><span class="line">                <span class="built_in">map</span>.<span class="built_in">put</span>(i,i);</span><br><span class="line">                System.out.<span class="built_in">println</span>(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>最后生成的结果并不如我们所愿，并且每次执行的结果都不同，相同的元素可能会被重复很多遍。</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>对于如何解决这个问题，Java 提供了原生的synchronized和JUC(java.util.concurrent)工具包，但在此之前我们可以先了解一下线程的状态，对于其中的资源锁如果不了解的话可以先跳过，在synchronized中再回来看</p>
+<p>对于如何解决这个问题，Java 提供了原生的synchronized和JUC(java.util.concurrent)工具包，但在此之前我们可以先了解一下线程的状态，对于其中的资源锁如果不了解的话可以先跳过，在synchronized小节中再回来看</p>
 <h2 id="线程的状态">线程的状态</h2>
 <p><a href="https://blog.csdn.net/pange1991/article/details/53860651" target="_blank" rel="noopener">线程状态详解</a></p>
 <p><a href="https://redspider.gitbook.io/concurrent/di-yi-pian-ji-chu-pian/4" target="_blank" rel="noopener">深入浅出多线程-线程调度转换</a></p>
@@ -298,13 +301,13 @@ start 、ready、running、waiting、terminate</p>
 <p><code>BLOCKED</code>: 等着抢资源锁<br>
 <code>WAITING</code>: 压根没机会去抢资源锁，除非被唤醒，重新再抢资源锁(Object.wait/Thread.join)<br>
 <code>TIMED_WAITING</code>: wait一个具体的时间，然后自动被唤醒(Thread.sleep(ms),Obejct.wait(ms),Thread.join(ms))<br>
-对于等待队列（WAITING），同步队列（Blocked），对象，对象锁，十分建议看看上面<strong>第一个参考链接中的等待队列图解：</strong><br>
+对于等待队列（WAITING），同步队列（Blocked），对象，对象锁，十分建议看看上面<strong>线程状态详解博客中的等待队列图解：</strong><br>
 <img src="wait_queue.jpg" alt="等待队列图"></p>
-<h3 id="哪些操作会释放对象锁">哪些操作会释放对象锁？</h3>
-<p><strong>Object.wait()会释放对象锁</strong><br>
-<strong>Thread.sleep()不会释放对象锁</strong>，所以我们经常在方法体内使用Thread.sleep()方法来模拟I/O操作</p>
+<p><strong>哪些操作会释放对象锁？</strong><br>
+<code>Object.wait()</code>会释放对象锁<br>
+<code>Thread.sleep()</code>不会释放对象锁，所以我们经常在方法体内使用Thread.sleep()方法来模拟I/O操作</p>
 <h2 id="synchronized">synchronized</h2>
-<p>我们只需要在访问共享资源的方法中加上一把锁（使用synchronized），就可以实现同步:</p>
+<p>synchronized是java原生的用来解决并发问题的方法。我们只需要在访问共享资源的方法中加上一把锁（使用synchronized），就可以实现同步:</p>
 <ul>
 <li>
 <ol>
@@ -314,11 +317,11 @@ start 、ready、running、waiting、terminate</p>
 </ul>
 <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    synchronized (<span class="built_in">map</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">map</span>.containsKey(i))&#123;</span><br><span class="line">            <span class="built_in">map</span>.<span class="built_in">put</span>(i,i);</span><br><span class="line">            System.out.<span class="built_in">println</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>synchronized到底锁住了什么？</strong><br>
-锁住的是对象，我们在线程的共享资源上加一把锁，只有拿到这把锁的线程才能执行synchronized块中的方法，至于哪个线程能够拿到则是由CPU调度自己去决定的。<strong>（结合上面那个等待队列图去看）</strong></p>
+锁住的是对象，我们在<code>线程的共享资源</code>上加一把锁，只有拿到这把锁的线程才能执行synchronized块中的方法，至于哪个线程能够拿到则是由CPU调度自己去决定的。<strong>（结合上面那个等待队列图去看）</strong></p>
 <ul>
 <li>
 <ol start="2">
-<li>其实我们并不一定要把被修改的资源（map）当做锁，随便一个Object对象都可以被当成锁，只要它是所有线程的共享资源就可以了,可以再回头去看看那个等待队列的图</li>
+<li>其实我们并不一定要把被修改的资源（map）当做锁，任何一个Object对象都可以被当成锁，只要它是所有线程的共享资源就可以了,可以再回头去看看那个等待队列的图</li>
 </ol>
 </li>
 </ul>
@@ -327,7 +330,7 @@ start 、ready、running、waiting、terminate</p>
 <ul>
 <li>
 <ol start="3">
-<li>我们也可以使用在方法上加synchronized等价于synchronized(this),将实例对象本身当成所有线程的共享资源并加锁</li>
+<li>我们也可以在方法上加synchronized或者使用synchronized(this),将实例对象本身当成所有线程的共享资源并加锁</li>
 </ol>
 </li>
 </ul>
@@ -335,7 +338,7 @@ start 、ready、running、waiting、terminate</p>
 <ul>
 <li>
 <ol start="4">
-<li>对static方法加锁，锁住了Class对象，也是线程所共有的</li>
+<li>对static方法加锁，锁住了Class对象，把类对象当成是线程所共有的资源</li>
 </ol>
 </li>
 </ul>
@@ -369,6 +372,7 @@ start 、ready、running、waiting、terminate</p>
 <li>线程的创建和销毁都是需要消耗CPU资源的<br>
 为什么要使用线程池比较容易理解，但难的是Java中有许多不同种类的线程池，以及各种各样的参数，要搞清每一种参数的意义以及不同线程池的适用场景则是学习线程池的重点。</li>
 </ul>
+<p>参考文章：<a href="https://blog.csdn.net/sunshinesir/article/details/103344912" target="_blank" rel="noopener">线程池开门营业招聘开发人员的一天</a></p>
 <h3 id="2-juc包">2. JUC包</h3>
 <p>这是Java的并发工具包 ，即<code>java.util.concurrent</code>,这个包中有许多方便的工具类<br>
 这个包中的工具类实在太多了，所以这里暂且记录一下，之后再进行补充。</p>
@@ -420,7 +424,7 @@ Java 8 中的 parallelStream （不属于JUC包）</li>
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么需要多线程"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">为什么需要多线程？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多线程的适用场景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">多线程的适用场景</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用多线程"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">使用多线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#demo"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">demo</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线程里都存了些什么"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">线程里都存了些什么？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#子线程是什么时候结束的"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">子线程是什么时候结束的？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#多线程带来的问题"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">多线程带来的问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一个小例子"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">一个小例子</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#代码demo"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">代码demo</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线程的状态"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">线程的状态</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#哪些操作会释放对象锁"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">哪些操作会释放对象锁？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#synchronized"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">synchronized</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#threadlocal"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">ThreadLocal</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#未完待续"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">未完待续 . . .</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-线程池"><span class="toc-nav-number">9.1.</span> <span class="toc-nav-text">1. 线程池</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-juc包"><span class="toc-nav-number">9.2.</span> <span class="toc-nav-text">2. JUC包</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#多线程概述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">多线程概述</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#为什么需要多线程"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">为什么需要多线程？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多线程的适用场景"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">多线程的适用场景</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用多线程"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">使用多线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#线程里都存了些什么"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">线程里都存了些什么？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#子线程是什么时候结束的"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">子线程是什么时候结束的？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#多线程带来的问题"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">多线程带来的问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一个小例子"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">一个小例子</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#代码demo"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">代码demo</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线程的状态"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">线程的状态</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#synchronized"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">synchronized</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#threadlocal"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">ThreadLocal</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#未完待续"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">未完待续 . . .</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-线程池"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">1. 线程池</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-juc包"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">2. JUC包</span></a></li></ol></li></ol>
         
         </div>
       </aside>
