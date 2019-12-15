@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Java-多线程小记（一） - Thoughtliuw | 刘威的博客
+        
+    </title>
+
+    <link rel="canonical" href="http://yoursite-url/2019/11/30/Java-多线程小记（一）/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('wait_queue.jpg')
+            /*post*/
+        
+    }
+    
+    #signature{
+        background-image: url('/img/signature/BeanTechSign-white.png');
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>Java-多线程小记（一）</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Thoughtliuw on
+                            2019-11-30
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Read &amp; Write</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p><em>Java多线程的内容很多，本篇文章只是一个概览，许多内容需要另外成文才能梳理清楚</em></p>
+<h2 id="为什么需要多线程">为什么需要多线程？</h2>
+<p>参考文章：<br>
+<a href="https://mp.weixin.qq.com/s?__biz=MzAxOTc0NzExNg==&amp;mid=2665514609&amp;idx=1&amp;sn=ba61f8b37acc79b1a17871fc7ec5c353&amp;chksm=80d67e32b7a1f724242c38502b9aad8ad398b6b5c56c4e980c802a880ec1c70e5dfdcaafd9ae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">小白科普:线程和线程池</a><br>
+需要多线程无非就是一个原因，那就是单线程搞不定了，我们可以先联想一个生活中的例子<br>
+假如我们走进了一家餐馆，餐馆不大，所以老板为了节省成本，只招了一个厨师，平时大家都点个青椒炒青菜，西红柿炒番茄似乎还没有什么问题，可是今天好死不死，你前面那位兄弟点了一道佛跳墙。。。<br>
+Java中的代码是同步执行的，也就是说，你前一行代码不执行完，后面一行代码是不能执行的。<br>
+这样的好处是代码非常容易理解，同一时刻，你在执行每一步的时候都知道前面一步返回了什么，但问题是效率很低，非常低。<br>
+比如说一个后台服务器，你能想象吗？你每一次向服务器发起一个请求，都一定要等你前面的所有用户都请求都处理完毕了才能轮到你，假如一个请求处理需要1秒钟，同时有10个人访问你的服务器，那你要等10秒，这可才10人啊。。</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">接收请求<span class="comment">()</span>;</span><br><span class="line">处理请求<span class="comment">()</span>; <span class="comment">// 可能会涉及到各种文件I/O，网络I/O，总之耗时比较长</span></span><br><span class="line">返回结果给用户<span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
+<p>那么就像餐馆只需要再加几个厨师就可以解决问题一样，我们也只需要再加上几个线程就可以暂时解决问题。每一个用户都有一个专门的线程来执行程序，然后返回结果给用户，这应该没问题了吧（实际上这种方式效率也不算高，虽然响应时间提高了很多，但是10个线程在碰到耗时操作时全部都搁哪儿等着，对于资源也是一种很大的浪费，这里暂且不论）</p>
+<h3 id="多线程的适用场景">多线程的适用场景</h3>
+<p><a href="https://zhuanlan.zhihu.com/p/62766037" target="_blank" rel="noopener">CPU密集型和IO密集型</a></p>
+<ul>
+<li>
+<p>对于CPU密集型操作<br>
+单核CPU并不能提升效率，网上有很多例子说计算 1+2+。。。+1000 然后分成10个线程每个线程都计算100个数最后合并就可以提高效率，但如果是在单核CPU下，只不过是CPU从一个线程切换到另外一个线程去计算而已，切换的过程还很费时间，效率不增反降。<br>
+举个例子，就好像说上体育课体育老师要统计人数，如果统计的方式就是体育老师一个人在那里挨个数，那同学们从排成1列换成排成10列，并不会让让老师数的更快，老师第一列数到一半然后又去第二列，在不同的队列中切来切去，反而会降低数人的速度。<br>
+所以说CPU密集型任务提升的关键是有多个CPU同时计算，也就是多个老师同时来数，才能真正的提高效率，提高的效率就是老师的人数，比如4个老师一起数，效率就能提升4倍（当然，不能完全对照CPU，人家CPU又不是只等着帮你干这一件事情）</p>
+</li>
+<li>
+<p>对于IO密集型操作<br>
+即使是单核CPU，只要开多个线程也能提高效率，因为当IO操作开始时，和CPU密集型任务不同，CPU并不是一直在计算，而是无事可做，只能等着，所以开启多个线程后，在线程中切换的时间相比等IO的时间则少多了。<br>
+还是用体育老师这个例子，这次要随堂测验，要测1班的同学们最多能做多少个俯卧撑（我们假设这些人都是体育健将，至少会做个5分钟的俯卧撑）。老师这次请了一个2班的同学来帮忙，当老师在测验单上写好了第一个人的名字后，就对2班的同学说可以开始了，然后他就会监督你完成一个又一个标准俯卧撑，不标准的都不给你算~。统计完成后，老师会对2班的同学说：“你辛苦了，回去上课吧，期末成绩给你加10分儿~~”<br>
+这个过程中，跟统计人数不一样，<strong>这时老师其实是无事可做的</strong>，而且要等很长时间才能开始下一个测验。<br>
+所以老师决定当第一个人在测验的时候，再去请一个2班的同学来帮忙，用同样的方式开启第二个测验（开启了一个新的线程）。<br>
+于是老师就在不断的去2班请新的同学来帮忙，记录1班待测同学的名字，开始测验之间来回穿梭（我们假设这个过程只需要几秒钟），但这相比等测验的时间来说都是值得的。</p>
+</li>
+</ul>
+<p>看到这里，你大概会有一些疑问了，为啥要让2班的同学回去呢，以及为什么不一开始就多请几个人呢？能想到这些问题，你已经掌握了后面要讲的<code>线程池</code>的真谛。<br>
+去请2班同学来帮忙以及让2班同学回去上课对应着线程的创建和销毁，这个过程虽然相比测验（IO）的时间来说也算短了但是毕竟还是需要花费时间的，所以一开始就多请几个人，并且不让他们做完事情后立即回去，而是继续做下一件事情，避免频繁的创建和销毁线程。就是之后要说的线程池的意义了。</p>
+<p>最后一个问题：那一开始请多少人合适呢？你可能会说，那当然是韩信点兵多多益善啦，可事实是:</p>
+<ol>
+<li>线程也是要占据内存空间的，JVM的内存并不像学校的操场那么大，可以同时容纳那么多线程。</li>
+<li>即使能容纳，这样也会造成资源的浪费。因为每个人的测验时间并不一样，有的人可能5分钟测完了，有的人可能10分钟还在继续做着呢，那么我为每个人都分配一个2班的记录员则是一种浪费了，例如1班有20个同学，我请10个人来帮忙记录，当有人先测验完了，我就让那个2班的记录员去测其他人则是一种充分的资源利用。<br>
+这样相比直接请20个人来肯定是慢一些的，但资源的利用率更高。<br>
+所以到底分配多少个线程合适，由于实战经验不多，我暂时也没研究清楚（逃~）</li>
+</ol>
+<h3 id="使用多线程">使用多线程</h3>
+<p>网上已经有很多例子了，这里简单演示一下，就用去餐馆吃饭的例子吧。<br>
+我们使用Thread.sleep(2000)来模拟一个耗时的等菜（I/O）操作。</p>
+<h3 id="demo">demo</h3>
+<ul>
+<li>单线程版本：</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 餐馆吃饭单线程版</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadInit</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws InterruptedException </span>&#123;</span><br><span class="line"><span class="comment">//         使用单线程</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">            ThreadInit.去餐馆吃饭();</span><br><span class="line">            ThreadInit.去餐馆吃饭();</span><br><span class="line">            ThreadInit.去餐馆吃饭();</span><br><span class="line">            ThreadInit.去餐馆吃饭();</span><br><span class="line">            <span class="keyword">long</span> <span class="built_in">end</span> = System.currentTimeMillis();</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"单线程总计用时: "</span> + (<span class="built_in">end</span> - start)/<span class="number">1000</span> + <span class="string">"s"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> 去餐馆吃饭() &#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"点菜"</span>);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"等菜"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"上菜"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>多线程版本：<br>
+这里要提一下就是我们不能像单线程中那样直接统计耗时，因为main线程并不会等你其他线程都结束了才打印，所以这里用了一个比较笨的办法，新开了一个线程，无限循环，判断其他线程是否结束，如果都结束了，打印耗时，退出循环。</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 餐馆吃饭多线程版</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadInit</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> throws InterruptedException </span>&#123;</span><br><span class="line">        <span class="comment">// 使用多线程</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">            Thread thread1 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户1"</span>);</span><br><span class="line">            Thread thread2 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户2"</span>);</span><br><span class="line">            Thread thread3 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户3"</span>);</span><br><span class="line">            Thread thread4 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> 去餐馆吃饭多线程改进版(),<span class="string">"用户4"</span>);</span><br><span class="line">            thread1.start();</span><br><span class="line">            thread2.start();</span><br><span class="line">            thread3.start();</span><br><span class="line">            thread4.start();</span><br><span class="line"></span><br><span class="line">            Thread timingThread = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="built_in">run</span>() &#123;</span><br><span class="line">                    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">                        <span class="keyword">if</span>( !(thread1.isAlive() || thread2.isAlive() </span><br><span class="line">                        || thread3.isAlive() || thread4.isAlive) ) &#123;</span><br><span class="line">                            <span class="keyword">long</span> <span class="built_in">end</span> = System.currentTimeMillis();</span><br><span class="line">                            System.out.<span class="built_in">println</span>(<span class="string">"多线程总计用时: "</span> + (<span class="built_in">end</span> - start) + <span class="string">"ms"</span>);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            timingThread.start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> 去餐馆吃饭多线程改进版 <span class="title">implements</span> <span class="title">Runnable</span>&#123;</span></span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(Thread.currentThread().getName()+ <span class="string">"点菜"</span>);</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"等菜"</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.<span class="built_in">println</span>(Thread.currentThread().getName()+ <span class="string">"上菜"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="线程里都存了些什么">线程里都存了些什么？</h2>
+<p>子线程和主线程（main）没有什么区别，他们都存储了方法栈，也就说方法的局部变量都是隔离的，但是他们是共享JVM堆中的对象的。</p>
+<h2 id="子线程是什么时候结束的">子线程是什么时候结束的？</h2>
+<p>和主线程一样，方法执行完了就结束，对于多线程而言就是执行完了Run方法就结束</p>
+<h2 id="多线程带来的问题">多线程带来的问题</h2>
+<p>多线程确实大大提高了我们的效率，但并不是什么问题都没有，否则Java也不会专门弄一个JUC(<code>java.util.concurrent</code>)包来解决并发问题了<br>
+多线程主要的问题就是对于共享资源的访问上。</p>
+<h3 id="一个小例子">一个小例子</h3>
+<p>比如说现在有一个原始的车站，准备卖票，但他们并没有车票系统，只有一块供旅客看的大屏幕，屏幕上显示了不同车次的剩余车票数，车票数的更新需要人工操作。<br>
+假设现在一共有100张1111车次的票。分别由两个售票员（A和B）进行售卖，一人50张，他们面前排着长长的队。<br>
+当一位旅客在A处买完车次为1111的票后，售票员A回头看了一下大屏幕，车票数量还剩100张，于是他思考了一下，<code>100 - 1 = 99</code>，于是他按下手中的机器，将数量更新为99张。<br>
+但是当售票员A还在思考<code>100-1</code>等于多少，或者说思考完了，正准备将99输入机器的时候，售票员B也卖出了一张票，回头看了一下大屏幕，恩，还剩100张车票，于是他和售票员A进行了相同的操作。<br>
+问题是不是已经呼之欲出了，明明卖出了2张票，但最后大屏幕上显示的却是99张，这就是因为回头看屏幕拿到当前车票数，进行计算，回写数据这三个步骤并非原子性操作。</p>
+<p>在Java中有一些操作在多线程下很容易出现这样的情况</p>
+<ol>
+<li>i++</li>
+<li>if then do</li>
+</ol>
+<p>下面用代码举个小例子</p>
+<h2 id="代码demo">代码demo</h2>
+<p>目的，随机生成一个5以内的数字，如果map中不存在就put进去</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread_Sync</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        Map&lt;Integer,Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> AddElement(<span class="built_in">map</span>)).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AddElement</span> <span class="title">implements</span> <span class="title">Runnable</span>&#123;</span></span><br><span class="line">        <span class="keyword">private</span> Map&lt;Integer,Integer&gt; <span class="built_in">map</span>;</span><br><span class="line">        AddElement(Map&lt;Integer,Integer&gt; <span class="built_in">map</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.<span class="built_in">map</span> = <span class="built_in">map</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">            <span class="keyword">if</span>(!<span class="built_in">map</span>.containsKey(i))&#123;</span><br><span class="line">                <span class="built_in">map</span>.<span class="built_in">put</span>(i,i);</span><br><span class="line">                System.out.<span class="built_in">println</span>(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后生成的结果并不如我们所愿，并且每次执行的结果都不同，相同的元素可能会被重复很多遍。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>对于如何解决这个问题，Java 提供了原生的synchronized和JUC(java.util.concurrent)工具包，但在此之前我们可以先了解一下线程的状态，对于其中的资源锁如果不了解的话可以先跳过，在synchronized中再回来看</p>
+<h2 id="线程的状态">线程的状态</h2>
+<p><a href="https://blog.csdn.net/pange1991/article/details/53860651" target="_blank" rel="noopener">线程状态详解</a></p>
+<p><a href="https://redspider.gitbook.io/concurrent/di-yi-pian-ji-chu-pian/4" target="_blank" rel="noopener">深入浅出多线程-线程调度转换</a></p>
+<p>操作系统中的线程状态：<br>
+start 、ready、running、waiting、terminate</p>
+<p>Java中的线程状态：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">enum</span> <span class="title">State</span> &#123;</span></span><br><span class="line">    NEW,</span><br><span class="line">    RUNNABLE,</span><br><span class="line">    BLOCKED,</span><br><span class="line">    WAITING,</span><br><span class="line">    TIMED_WAITING, </span><br><span class="line">    TERMINATED;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>BLOCKED</code>: 等着抢资源锁<br>
+<code>WAITING</code>: 压根没机会去抢资源锁，除非被唤醒，重新再抢资源锁(Object.wait/Thread.join)<br>
+<code>TIMED_WAITING</code>: wait一个具体的时间，然后自动被唤醒(Thread.sleep(ms),Obejct.wait(ms),Thread.join(ms))<br>
+对于等待队列（WAITING），同步队列（Blocked），对象，对象锁，十分建议看看上面<strong>第一个参考链接中的等待队列图解：</strong><br>
+<img src="wait_queue.jpg" alt="等待队列图"></p>
+<h3 id="哪些操作会释放对象锁">哪些操作会释放对象锁？</h3>
+<p><strong>Object.wait()会释放对象锁</strong><br>
+<strong>Thread.sleep()不会释放对象锁</strong>，所以我们经常在方法体内使用Thread.sleep()方法来模拟I/O操作</p>
+<h2 id="synchronized">synchronized</h2>
+<p>我们只需要在访问共享资源的方法中加上一把锁（使用synchronized），就可以实现同步:</p>
+<ul>
+<li>
+<ol>
+<li>对于上面那个例子我们只需要在run中加一个synchronized即可</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    synchronized (<span class="built_in">map</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">map</span>.containsKey(i))&#123;</span><br><span class="line">            <span class="built_in">map</span>.<span class="built_in">put</span>(i,i);</span><br><span class="line">            System.out.<span class="built_in">println</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>synchronized到底锁住了什么？</strong><br>
+锁住的是对象，我们在线程的共享资源上加一把锁，只有拿到这把锁的线程才能执行synchronized块中的方法，至于哪个线程能够拿到则是由CPU调度自己去决定的。<strong>（结合上面那个等待队列图去看）</strong></p>
+<ul>
+<li>
+<ol start="2">
+<li>其实我们并不一定要把被修改的资源（map）当做锁，随便一个Object对象都可以被当成锁，只要它是所有线程的共享资源就可以了,可以再回头去看看那个等待队列的图</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread_Sync</span> &#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        Map&lt;Integer,Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        Object lock = <span class="keyword">new</span> Object();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> AddElement(<span class="built_in">map</span>,lock)).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AddElement</span> <span class="title">implements</span> <span class="title">Runnable</span>&#123;</span></span><br><span class="line">        <span class="keyword">private</span> Object lock;</span><br><span class="line">        <span class="keyword">private</span> Map&lt;Integer,Integer&gt; <span class="built_in">map</span>;</span><br><span class="line">        AddElement(Map&lt;Integer, Integer&gt; <span class="built_in">map</span>, Object lock) &#123;</span><br><span class="line">            <span class="keyword">this</span>.<span class="built_in">map</span> = <span class="built_in">map</span>;</span><br><span class="line">            <span class="keyword">this</span>.lock = lock;</span><br><span class="line">        &#125;</span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            synchronized (lock) &#123;</span><br><span class="line">                <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">                <span class="keyword">if</span>(!<span class="built_in">map</span>.containsKey(i))&#123;</span><br><span class="line">                    <span class="built_in">map</span>.<span class="built_in">put</span>(i,i);</span><br><span class="line">                    System.out.<span class="built_in">println</span>(i);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重点看加入的lock这一部分，我们只是new 了一个Object，但因为它是所有线程所共享的资源，所以它完全可以作为锁</p>
+<ul>
+<li>
+<ol start="3">
+<li>我们也可以使用在方法上加synchronized等价于synchronized(this),将实例对象本身当成所有线程的共享资源并加锁</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    synchronized (<span class="keyword">this</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">map</span>.containsKey(i))&#123;</span><br><span class="line">            <span class="built_in">map</span>.<span class="built_in">put</span>(i,i);</span><br><span class="line">            System.out.<span class="built_in">println</span>(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">或者</span><br><span class="line">@Override</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> synchronized <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">    <span class="keyword">if</span>(!<span class="built_in">map</span>.containsKey(i))&#123;</span><br><span class="line">        <span class="built_in">map</span>.<span class="built_in">put</span>(i,i);</span><br><span class="line">        System.out.<span class="built_in">println</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<ol start="4">
+<li>对static方法加锁，锁住了Class对象，也是线程所共有的</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread2_Sync2</span> &#123;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer,Integer&gt; <span class="built_in">map</span> = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">String</span>[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> AddElement()).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> synchronized <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"开始"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"等一小会儿"</span>);</span><br><span class="line">            Thread.sleep(<span class="number">1</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"结束"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AddElement</span> <span class="title">implements</span> <span class="title">Runnable</span>&#123;</span></span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="built_in">print</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后打印结果（部分结果）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">开始</span><br><span class="line">等一小会儿</span><br><span class="line">结束</span><br><span class="line">开始</span><br><span class="line">等一小会儿</span><br><span class="line">结束</span><br></pre></td></tr></table></figure>
+<p>如果不加synchronized(每次的结果都不同，但都不会按照我们的预期执行)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">开始</span><br><span class="line">等一小会儿</span><br><span class="line">开始</span><br><span class="line">开始</span><br><span class="line">等一小会儿</span><br><span class="line">开始</span><br><span class="line">等一小会儿</span><br><span class="line">等一小会儿</span><br><span class="line">等一小会儿</span><br><span class="line">结束</span><br><span class="line">结束</span><br><span class="line">结束</span><br><span class="line">结束</span><br><span class="line">结束</span><br></pre></td></tr></table></figure>
+<p><strong>最后：</strong> 加锁是一个很昂贵的操作，因为加锁之后，同一时间只能有一个线程来访问这段被锁住的代码，实际上就变回了类似单线程一样，我不执行完你就别想执行。所以 锁到底应该加在哪段代码中则需要我们进行思考，例如说run方法中并不是所有的代码都需要被锁住，只有map的if-else那一段才会出现问题，所以有时直接在run方法上加synchronized并非好的方案。<br>
+但是，synchronized在并发情况下的性能会比较低，所以Java在后期提供了JUC工具包使用各种方案，既简化了操作，也提升了性能，例如<code>concurrentHashMap</code>的分段锁，实现了<code>CAS(compare-and-swap)</code>的一系列原子类例如<code>AtomicInteger</code>(属于 java.util.concurrent.atomic)，我们在使用时，在搞清适用场景的情况下，应该尽量去使用这些成熟的并发类（当然，适用场景我是还没搞清楚的~~）</p>
+<h2 id="threadlocal">ThreadLocal</h2>
+<p><a href="https://droidyue.com/blog/2016/03/13/learning-threadlocal-in-java/" target="_blank" rel="noopener">理解Java中的ThreadLocal</a><br>
+<a href="https://redspider.gitbook.io/concurrent/di-yi-pian-ji-chu-pian/5#5-5-3-threadlocal-lei" target="_blank" rel="noopener">深入浅出多线程-ThreadLocal类使用</a><br>
+文章已经写的很详细了，这里稍稍总结一下：</p>
+<ol>
+<li>ThreadLocal，顾名思义就是线程局部变量，也就说它跟方法内部的局部变量很像，都是线程所独有的，但不<strong>ThreadLocal并不是存在方法栈中，而是也存在Java堆中</strong></li>
+<li>为什么要使用ThreadLocal呢？<br>
+<strong>ThreadLocal 并不是为了解决并发问题而存在的</strong>。<br>
+你想啊，资源都线程独有了，还共享个啥呀，并发问题就是在操作共享资源时才会出现的。<br>
+以下内容来自上面的深入浅出多线程博客</li>
+</ol>
+<blockquote>
+<p>那ThreadLocal有什么作用呢？如果只是单纯的想要线程隔离，在每个线程中声明一个私有变量就好了呀，为什么要使用ThreadLocal？<br>
+最常见的ThreadLocal使用场景为用来解决数据库连接、Session管理等。数据库连接和Session管理涉及多个复杂对象的初始化和关闭。如果在每个线程中声明一些私有变量来进行操作，那这个线程就变得不那么“轻量”了，需要频繁的创建和关闭连接。</p>
+</blockquote>
+<h2 id="未完待续">未完待续 . . .</h2>
+<h3 id="1-线程池">1. 线程池</h3>
+<p>为什么要使用线程池，在为什么要使用多线程中举例子的时候已经说明过了，其实比较好理解：</p>
+<ul>
+<li>线程是要占据内存的</li>
+<li>线程的创建和销毁都是需要消耗CPU资源的<br>
+为什么要使用线程池比较容易理解，但难的是Java中有许多不同种类的线程池，以及各种各样的参数，要搞清每一种参数的意义以及不同线程池的适用场景则是学习线程池的重点。</li>
+</ul>
+<h3 id="2-juc包">2. JUC包</h3>
+<p>这是Java的并发工具包 ，即<code>java.util.concurrent</code>,这个包中有许多方便的工具类<br>
+这个包中的工具类实在太多了，所以这里暂且记录一下，之后再进行补充。</p>
+<ul>
+<li>Lock/Condition （升级版的synchronized）</li>
+<li>BlockingQueue</li>
+<li>CountDownLatch</li>
+<li>Future</li>
+<li>ForkJoinPool</li>
+<li>AtomicInteger<br>
+Java 8 中的 parallelStream （不属于JUC包）</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/11/29/Java8-Stream小记/" data-toggle="tooltip" data-placement="top" title="Java8-Stream小记">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么需要多线程"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">为什么需要多线程？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多线程的适用场景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">多线程的适用场景</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用多线程"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">使用多线程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#demo"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">demo</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线程里都存了些什么"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">线程里都存了些什么？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#子线程是什么时候结束的"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">子线程是什么时候结束的？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#多线程带来的问题"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">多线程带来的问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一个小例子"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">一个小例子</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#代码demo"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">代码demo</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#线程的状态"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">线程的状态</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#哪些操作会释放对象锁"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">哪些操作会释放对象锁？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#synchronized"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">synchronized</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#threadlocal"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">ThreadLocal</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#未完待续"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">未完待续 . . .</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-线程池"><span class="toc-nav-number">9.1.</span> <span class="toc-nav-text">1. 线程池</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-juc包"><span class="toc-nav-number">9.2.</span> <span class="toc-nav-text">2. JUC包</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://beantech.org" target="_blank">Bean Tech</a></li>
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus embedded js code start (one page only need to embed once) -->
+<!-- <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "your-disqus-ID";
+    var disqus_identifier = "http://yoursite-url/2019/11/30/Java-多线程小记（一）/";
+    var disqus_url = "http://yoursite-url/2019/11/30/Java-多线程小记（一）/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script> -->
+<!-- disqus embedded js code start end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/thoughtliuw">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Thoughtliuw 2019 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://beantech.org">BeanTech</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=YenYuHsuan&repo=hexo-theme-beantech&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://yoursite-url/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<!-- <img src="http://yoursite-url/img/icon_wechat.png" width="0" height="0" /> -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
